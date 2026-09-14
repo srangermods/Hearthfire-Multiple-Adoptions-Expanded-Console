@@ -664,14 +664,8 @@ Function MoveFamily(Actor child)
 
 	LocationAlias[] schedulerCurrentHomeHouseArray = getSchedulerCurrentHomeHouseArray()
 	if schedulerCurrentHomeHouseArray[childIndex].getLocation() != None
-
-		
 	else
 		;it didn't work
-		if GVDisableMoveNotification.getValueInt() == 0
-
-			
-		endif
 		MovingTogglePackageOn = False
 		child.EvaluatePackage()
 		return
@@ -1410,8 +1404,6 @@ Function ReadyForcegreetEvent(Actor child = None)
 		ForcegreetEventReady = True
 		if child
 			ForceGreetChild = child
-			;SKSE
-			;debug.notification("setting up ReadyForceGreetEvent for: "+child.getDisplayName())
 		endif
 		;Make sure the children aren't in any games.
 		StopGames()
@@ -1839,9 +1831,6 @@ Function PlayerLocationChanged(Location newLoc, Location oldLoc)
 					;Debug.Trace("Player's new location is the new home city, OR player is not in the parent of the children's location.")
 					if ( ( newLoc == TranslateHouseIntToLoc(newHomeArray[i]) && (!oldLoc|| !newLoc.IsChild(oldLoc) ) ) || \
 					( !newLoc.IsChild( childActor.GetCurrentLocation() ) ) )
-						;Int fSKSE = SKSE.GetVersion() * 10000 + SKSE.GetVersionMinor() * 100 + SKSE.GetVersionBeta()
-						;Debug.notification("SKSE Version: " + fSKSE) 
-						;if newHomeArray[i] == 9 && fSKSE >= 20206
 						if newHomeArray[i] == 9
 							;new location's parent is not the new home's parent's parent
 							if ( (TranslateHouseIntToInteriorLoc(newHomeArray[i]).getParent().getParent() ) != newLoc.getParent() && newLoc.getParent() )
@@ -2923,4 +2912,8 @@ EndFunction
 
 int Function numberAdopted()
   return numChildrenAdopted
+EndFunction
+
+Bool Function isHMAExpandedInstalled()
+	return true
 EndFunction

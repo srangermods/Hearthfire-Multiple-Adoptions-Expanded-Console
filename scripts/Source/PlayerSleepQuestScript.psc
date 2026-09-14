@@ -22,8 +22,6 @@ Quest Property RelationshipMarriageFIN Auto
 Quest Property BYOHRelationshipAdoption Auto
 Spell Property pDoomLoverAbility Auto
 CompanionsHousekeepingScript Property CHScript Auto
-
-
 Function RemoveRested()
 
 	;remove all previous rested states
@@ -48,26 +46,35 @@ Event OnSleepStop(bool abInterrupted)
 	ElseIf Game.GetPlayer().HasSpell(pDoomLoverAbility) == 0
 		;don't run this if player has the Lover sign
 
-		If RelationshipMarriageFIN.IsRunning() == True && RelationshipMarriageFIN.GetStage() >= 10 && Game.GetPlayer().GetCurrentLocation() == LoveInterest.GetActorRef().GetCurrentLocation()
-;  			;debug.trace(Self + "Giving player the Lover's Comfort spell on Sleep End")
+		;USKP 2.0.1 - Check for a None location first so the game doesn't spit a bunch of errors instead.
+		if( Game.GetPlayer().GetCurrentLocation() == None )
+; 			debug.trace(Self + "Giving player the Rested spell for sleeping")	
+			RestedMessage.Show()
+			RemoveRested()
+			Game.GetPlayer().AddSpell(Rested, abVerbose = false)
+		ElseIf RelationshipMarriageFIN.IsRunning() == True && RelationshipMarriageFIN.GetStage() >= 10 && Game.GetPlayer().GetCurrentLocation() == LoveInterest.GetActorReference().GetCurrentLocation()
+ 			;debug.trace(Self + "Giving player the Lover's Comfort spell on Sleep End")
 			MarriageRestedMessage.Show()
 			RemoveRested()
 			Game.GetPlayer().AddSpell(MarriageSleepAbility, abVerbose = false)
 		ElseIf Game.GetPlayer().GetCurrentLocation().HasKeyword(LocTypeInn) == True
-;  			;debug.trace(Self + "Giving player the Well Rested spell for sleeping in an Inn")	
+ 			;debug.trace(Self + "Giving player the Well Rested spell for sleeping in an Inn")	
 			WellRestedMessage.Show()
 			RemoveRested()
 			Game.GetPlayer().AddSpell(WellRested, abVerbose = false)
 		ElseIf Game.GetPlayer().GetCurrentLocation().HasKeyword(LocTypePlayerHouse) == True
-;  			;debug.trace(Self + "Giving player the Well Rested spell for sleeping in Player House")	
+ 			;debug.trace(Self + "Giving player the Well Rested spell for sleeping in Player House")	
+			WellRestedMessage.Show()		; Added by USKP 1.0
+			RemoveRested()				; Added by USKP 1.0
 			Game.GetPlayer().AddSpell(WellRested, abVerbose = false)
 		Else
-;  			;debug.trace(Self + "Giving player the Rested spell for sleeping")	
+ 			;debug.trace(Self + "Giving player the Rested spell for sleeping")	
 			RestedMessage.Show()
 			RemoveRested()
 			Game.GetPlayer().AddSpell(Rested, abVerbose = false)
 		EndIf
      EndIf
+
      if (CHScript.PlayerHasBeastBlood != 1)
 		;Additionally, for Adoption...
 		Actor playerRef = Game.GetPlayer()

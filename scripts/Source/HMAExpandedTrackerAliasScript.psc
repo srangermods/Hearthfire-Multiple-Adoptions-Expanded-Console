@@ -24,4 +24,14 @@ Function HandleUpdates()
 		debug.notification("HMA Expanded Version upgrade to 2.00 complete.")
 		version = 2.00
 	endif
+
+	Quest BYOHRelationshipAdoption = Quest.getQuest("BYOHRelationshipAdoption")
+	if ! (BYOHRelationshipAdoption.GetAliasByName("CurrentHomeExterior10"))
+		Debug.MessageBox("Warning: HMA Expanded's BYOHRelationshipAdoption quest edits are being overridden by another mod. Please exit the game and fix your load order, and roll back your save.")
+		return
+	endif
+	BYOHRelationshipAdoptionScript AdoptionScript = BYOHRelationshipAdoption as BYOHRelationshipAdoptionScript
+	if ! (AdoptionScript.isHMAExpandedInstalled())
+		    Debug.MessageBox("Warning: HMA Expanded's byohrelationshipadoptionscript is being overridden by another mod. Please exit the game and fix your load order, and roll back your save.")
+	EndIf
 EndFunction
