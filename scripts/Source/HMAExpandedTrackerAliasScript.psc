@@ -25,8 +25,9 @@ Function HandleUpdates()
 		version = 2.00
 	endif
 
-	Quest BYOHRelationshipAdoption = Quest.getQuest("BYOHRelationshipAdoption")
-	if ! (BYOHRelationshipAdoption.GetAliasByName("CurrentHomeExterior10"))
+	Quest BYOHRelationshipAdoption = Game.GetFormFromFile(0x000042B4,"Hearthfires.esm") as Quest
+
+	if ! (BYOHRelationshipAdoption.GetAlias(59))
 		Debug.MessageBox("Warning: HMA Expanded's BYOHRelationshipAdoption quest edits are being overridden by another mod. Please exit the game and fix your load order, and roll back your save.")
 		return
 	endif
